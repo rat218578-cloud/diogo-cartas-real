@@ -1,11 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',
-  images: {
-    unoptimized: true
+module.exports = {
+  plugins: {
+    'tailwindcss': {},
+    'autoprefixer': {},
   },
-  trailingSlash: true,
-  distDir: 'out'
 }
-
-module.exports = nextConfig
