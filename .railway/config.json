@@ -1,0 +1,17 @@
+{
+  "project": "diogo-cartas-clone",
+  "environment": "production",
+  "deployment": {
+    "region": "us-west",
+    "healthCheck": {
+      "enabled": true,
+      "timeout": 100,
+      "interval": 30
+    },
+    "autoscaling": {
+      "enabled": false,
+      "minReplicas": 1,
+      "maxReplicas": 1
+    }
+  }
+}
