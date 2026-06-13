@@ -16,7 +16,6 @@ startCommand = "npm start"
 internalPort = 3000
 healthcheckPath = "/"
 healthcheckTimeout = 100
-publicPort = 3000
 
 [deploy]
 restartPolicyType = "ON_FAILURE"
