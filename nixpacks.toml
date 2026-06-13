@@ -1,51 +1,22 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "python3"]
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
-# Instala dependências do backend
 cmds = [
   "cd backend && npm install",
   "cd frontend && npm install"
 ]
 
 [phases.build]
-# Build do frontend apenas
 cmds = [
   "cd frontend && npm run build"
 ]
 
-[phases.postBuild]
-cmds = [
-  "echo 'Build concluído com sucesso!'"
-]
-
 [start]
-# Comando para iniciar o backend (que serve API e WebSocket)
+# Inicia APENAS o backend (o frontend é serviço separado)
 cmd = "cd backend && node server.js"
-
-[build]
-# Configurações globais de build
-builder = "NIXPACKS"
-
-[build.env]
-NODE_ENV = "production"
-NPM_CONFIG_PRODUCTION = "false"
-
-[build.services.backend]
-root = "backend"
-buildCommand = "npm install"
-startCommand = "node server.js"
-internalPort = 8080
-healthcheckPath = "/api/check-session"
-
-[build.services.frontend]
-root = "frontend"
-buildCommand = "npm install && npm run build"
-startCommand = "npm start"
-internalPort = 3000
-healthcheckPath = "/"
-publicPort = 3000
 
 [deploy]
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
+healthcheckPath = "/api/check-session"
