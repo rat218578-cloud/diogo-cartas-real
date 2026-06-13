@@ -17,7 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://diogo-cartas-real-production.up.railway.app'],
+  origin: ['http://localhost:3000', 'https://diogo-cartas-real-production.up.railway.app', 'https://*.railway.app'],
   credentials: true
 }));
 app.use(express.json());
@@ -28,7 +28,7 @@ app.use(session({
   cookie: { secure: false, maxAge: 3600000 }
 }));
 
-// ✅ ROTA RAIZ ADICIONADA
+// ✅ ROTA RAIZ - API Status
 app.get('/', (req, res) => {
   res.json({
     message: 'Diogo Cartas API - Backend rodando!',
@@ -42,6 +42,21 @@ app.get('/', (req, res) => {
   });
 });
 
+// ✅ SERVE OS ARQUIVOS ESTÁTICOS DO FRONTEND (se existir)
+const frontendPath = path.join(__dirname, '../frontend/out');
+app.use(express.static(frontendPath));
+
+// ✅ FALlBACK para SPA - qualquer rota não encontrada vai para o frontend
+app.get('*', (req, res, next) => {
+  // Se a rota não for da API, tenta servir o index.html do frontend
+  if (!req.path.startsWith('/api') && !req.path.startsWith('/socket.io')) {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  } else {
+    next();
+  }
+});
+
+// API Routes
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   
@@ -86,12 +101,12 @@ app.post('/api/logout', (req, res) => {
   res.json({ success: true });
 });
 
-// Inicia WebSocket
+// WebSocket Server
 const wsServer = new WebSocketSignalServer(3002);
 wsServer.start();
 
 app.listen(PORT, () => {
   console.log(`🌐 Servidor HTTP rodando na porta ${PORT}`);
   console.log(`📡 WebSocket: ws://localhost:3002`);
-  console.log(`✅ Rota raiz configurada em /`);
+  console.log(`✅ Backend rodando e servindo frontend (se disponível)`);
 });
