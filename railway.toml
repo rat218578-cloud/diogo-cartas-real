@@ -5,7 +5,6 @@ builder = "nixpacks"
 root = "backend"
 buildCommand = "npm install"
 startCommand = "node server.js"
-internalPort = 8080
 healthcheckPath = "/api/check-session"
 healthcheckTimeout = 100
 
@@ -13,7 +12,6 @@ healthcheckTimeout = 100
 root = "frontend"
 buildCommand = "npm install && npm run build"
 startCommand = "npm start"
-internalPort = 3000
 healthcheckPath = "/"
 healthcheckTimeout = 100
 
