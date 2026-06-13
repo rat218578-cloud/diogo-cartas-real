@@ -5,19 +5,34 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    container_name: diogo-backend
     ports:
       - "3001:3001"
       - "3002:3002"
     environment:
       - NODE_ENV=production
+      - PORT=3001
     restart: unless-stopped
+    networks:
+      - diogo-network
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: diogo-frontend
     ports:
       - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://backend:3001
+      - NEXT_PUBLIC_WS_URL=ws://backend:3002
     depends_on:
       - backend
     restart: unless-stopped
+    networks:
+      - diogo-network
+
+networks:
+  diogo-network:
+    driver: bridge
