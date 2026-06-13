@@ -1,0 +1,20 @@
+[build]
+builder = "nixpacks"
+
+[build.services.backend]
+root = "backend"
+buildCommand = "npm install"
+startCommand = "node server.js"
+healthcheckPath = "/api/check-session"
+healthcheckTimeout = 100
+
+[build.services.frontend]
+root = "frontend"
+buildCommand = "npm install && npm run build"
+startCommand = "npm start"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+
+[deploy]
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
