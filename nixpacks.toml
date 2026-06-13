@@ -8,12 +8,9 @@ cmds = [
 ]
 
 [phases.build]
-cmds = [
-  "cd frontend && npm run build"
-]
+cmds = ["cd frontend && npm run build"]
 
 [start]
-# Inicia APENAS o backend (o frontend é serviço separado)
 cmd = "cd backend && node server.js"
 
 [deploy]
